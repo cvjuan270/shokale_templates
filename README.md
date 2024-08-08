@@ -1,0 +1,1 @@
+# shokale_templates

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="shokale_sale_order_template" inherit_id="professional_templates.SO_14_document" name="Shokale">
+        <xpath expr="//div[hasclass('header')]" position="replace">
+            <div class="header">
+                <div class="">
+                    <div class="row align-items-center">
+                        <div class="col-8">
+                            <div>
+                                <span t-if="style.logo">
+                                    <img t-if="style.logo" t-att-src="image_data_uri(style.logo)"  alt="Logo"/>
+                                </span>
+                                <span t-if="not style.logo">
+                                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"  alt="Logo"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="d-inline-block" t-attf-style="
+                                background-color: {{style.theme_color}};
+                                border-radius: 20px 0px 0px 20px;
+                                padding: 5px 10px;
+                                height: 37px;">
+                                <span style="
+                                    font-size:1.5rem;
+                                    font-weight: 700;">
+                                    <t t-if="doc.state in ['draft','send']">COTIZACIÓN</t>
+                                    <t t-else="">ORDEN DE VENTA</t>
+                                </span>
+                            </div>
+                            <p style="
+                                    font-size:1.2rem;
+                                    font-weight: 700;" class="">
+                                    No. <t t-out="doc.name"/>
+                            </p>
+                            <p t-attf-style="
+                                color:{{style.text_color}}">
+                                <t t-out="doc.date_order.strftime('%d / %m / %Y')" />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('article')]" position="replace">
+            <div class="article page" t-attf-data-oe-model="sale.order" t-attf-data-oe-id="{{doc.id}}" t-attf-style="color:{{style.text_color}} !important;font-size:{{int(style.body_font)}}px !important;font-family:{{style.font_family}} !important;">
+                <div class="col-12" t-attf-style="white-space:pre-line;color:#{style.wm_color};left:#{style.leftpadding}mm; top:#{style.toppadding}mm;font-size:#{style.fontsize}px; opacity:#{style.opacity};z-index:-99; -webkit-transform:rotate(-#{style.rotate}deg);position:fixed;"><t t-esc="style.wm_eval(doc, time, user, res_company)"/></div>
+                <div  class="row row-cols-2 mb-4" t-attf-style="
+                    background-color: #e9eaec;
+                    padding: 10px 15px;
+                    border-radius: 15px;">
+                    <div class="col-8">
+                        <div>
+                            <t t-if="doc.partner_id.parent_id">
+                                <div style="margin-bottom:0px;text-transform: uppercase;font-size: 1rem;font-weight: 700;" t-field="doc.partner_id.parent_id"/>
+                                <div style="margin-bottom:0px;font-size: 0.8rem;">Contacto: <span t-field="doc.partner_id.name"/></div>
+                            </t>
+                            <t t-else="">
+                                <div t-field="doc.partner_id" style="margin-bottom:0px;text-transform: uppercase;font-size: 1rem;font-weight: 700;" t-options='{"widget": "contact", "fields":["name"],"no_marker": false}'/>
+                            </t>
+                            <div t-field="doc.partner_id" t-attf-style="margin-bottom:0px;color:{{style.text_color}};" t-options='{"widget": "contact", "fields":["phone","mobile"],"no_marker": false}'/>
+                            <div t-field="doc.partner_id" t-attf-style="margin-bottom:0px;color:{{style.text_color}};" t-options='{"widget": "contact", "fields":["email"],"no_marker": false}'/>
+                        </div>
+                    </div>
+                    <div class="col-4 d-flex justify-content-end">
+                        <t t-set="partner_nit" t-value="doc.partner_id.parent_id.vat if doc.partner_id.parent_id else doc.partner_id.vat"/>
+                        <t t-set="partner_nrc" t-value="doc.partner_id.parent_id.l10n_sv_nrc if doc.partner_id.parent_id else doc.partner_id.l10n_sv_nrc"/>
+                        <table class="table table-sm table-borderless" style="font-size:0.8rem">
+                            <tbody>
+                                <tr>
+                                    <td class="text-end">NIT/DUI: </td>
+                                    <td class="text-end"><t t-out="partner_nit"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end">NRC: </td>
+                                    <td class="text-end"><t t-out="partner_nrc"/></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-end">Condiciones: </td>
+                                    <td colspan="2" class="text-end"><div t-field="doc.payment_term_id"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!--Data-->
+                <t t-call="shokale_templates.shokale_order_lines"/>
+                <!--/Data-->
+            </div>
+            <!--End of PAGE-->
+
+        </xpath>
+
+        <xpath expr="//div[hasclass('footer')]" position="replace">
+            <div class="footer" t-attf-style="font-size:{{style.footer_font}}px !important;font-family:{{style.font_family}} !important;">
+                <t t-call="shokale_templates.shokale_company_footer"/>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
