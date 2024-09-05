@@ -5,7 +5,7 @@
         - Reporte persanalizado para la orden de venta y cotización
     """,
     'author': 'jcollado@tagre.pe',
-    # 'version': '17.0.1',
+    'version': '17.0',
     'website': 'http://www.tagre.pe',
     'category': 'sale',
     'depends': ['base', 'professional_templates'],
