@@ -59,6 +59,7 @@
                             </t>
                             <t t-else="">
                                 <div t-field="doc.partner_id" style="margin-bottom:0px;text-transform: uppercase;font-size: 1rem;font-weight: 700;" t-options='{"widget": "contact", "fields":["name"],"no_marker": false}'/>
+                                <div style="margin-bottom:0px; font-size:0.8rem;">Contacto: <span t-field="doc.partner_id.custom_contact"/></div>
                             </t>
                             <div t-field="doc.partner_id" t-attf-style="margin-bottom:0px;color:{{style.text_color}};" t-options='{"widget": "contact", "fields":["phone","mobile"],"no_marker": false}'/>
                             <div t-field="doc.partner_id" t-attf-style="margin-bottom:0px;color:{{style.text_color}};" t-options='{"widget": "contact", "fields":["email"],"no_marker": false}'/>
